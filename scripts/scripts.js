@@ -24,13 +24,23 @@ const gameBoard = (() => {
 
 
     const checkWinCondition = (() => {
+        let winningCombinations = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]];
+
         const CheckEqualSymbol = (x, y, z) => {
             return gameBoard.gameboardArray[x] == gameBoard.gameboardArray[y] && gameBoard.gameboardArray[y] == gameBoard.gameboardArray[z];
         }
         
+        for(let i = 0; i < winningCombinations.length; i++) {
+            let [x, y, z] = winningCombinations[i];
+            if(CheckEqualSymbol(x, y, z)) {
+                return true;
+            }
+        }
+        return false;
+
     })();
    
-    return { gameboardArray, checkEmptySpace };
+    return { gameboardArray, checkEmptySpace, checkWinCondition };
 })();
 
 function createPlayer(symbol) {
