@@ -1,8 +1,8 @@
 // TODO list after brainstorming a bit
-// 1. Create a 3x3 grid
-// 2. Assign an empty value to the parts of the grid that don't have a value
-// 3. Assign symbols for each player object X and O
-// 4. Create a list of player objects
+// 1. Create a 3x3 grid - done
+// 2. Assign an empty value to the parts of the grid that don't have a value - done
+// 3. Assign symbols for each player object X and O - done
+// 4. Create a list of player objects - done
 // 5. Make a loop for each player's turn
 // 6. Player inserts index in the console
 // 7. Check if the index is already inserted
@@ -13,17 +13,30 @@
 // 12. If yes, find out which symbol made the victory
 // 13. Announce who won
 
+let xIsUsed = false;
+
 const gameboard = (() => {
     const gameboardArray = [['','',''], ['','',''], ['','','']];
     return { gameboardArray };
 })();
 
+function createPlayer(symbol) {
+    const getTurn = () => {
+        return window.prompt("TICTACTOE INDEX: ");
+    }
+    return { symbol };
+}
+
 // Placeholder until i understand what this is supposed to do
 const gameFlow = (() => {
-    const playerList = [];
-    return {  };
+    const playerList = [createPlayer('X'), createPlayer('O')];
+    let gameOver = false;
+    const gameLoop = () => {
+        while (!gameOver) {
+            playerList.forEach(player => {
+                
+            });
+        }
+    };
+    return { playerList, };
 })();
-
-function createPlayer(name) {
-    return { name };
-}
