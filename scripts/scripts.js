@@ -5,9 +5,9 @@
 // 4. Create a list of player objects - done
 // 5. Make a loop for each player's turn - done
 // 6. Player inserts index in the console - done
-// 7. Check if the index is already inserted
-// 8. If yes, ask to insert again
-// 9. Their respective symbol is inserted in the grid
+// 7. Check if the index is already inserted - done
+// 8. If yes, ask to insert again - done
+// 9. Their respective symbol is inserted in the grid - done
 // 10. Check if any victory condition has been met
 // 11. If not, continue the game
 // 12. If yes, find out which symbol made the victory
@@ -22,6 +22,14 @@ const gameBoard = (() => {
         return gameboardArray[index] == '';
     }    
 
+
+    const checkWinCondition = (() => {
+        const CheckEqualSymbol = (x, y, z) => {
+            return gameBoard.gameboardArray[x] == gameBoard.gameboardArray[y] && gameBoard.gameboardArray[y] == gameBoard.gameboardArray[z];
+        }
+        
+    })();
+   
     return { gameboardArray, checkEmptySpace };
 })();
 
@@ -43,15 +51,18 @@ const gameFlow = (() => {
         while (!gameOver) {
             playerList.forEach(player => {
 
+                // Check for valid move
                 let playerChoice;
                 do {
                     playerChoice = player.getTurn();
                 }
                 while (gameBoard.checkEmptySpace(playerChoice));
 
-                gameBoard.gameboardArray[playerChoice] = player.symbol;
-                
-                // Check here for a win condition
+                gameBoard.gameboardArray[playerChoice] = player.symbol;                                                                         
+
+                // Win check
+
+
             });
         }
     };
