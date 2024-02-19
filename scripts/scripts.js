@@ -10,7 +10,7 @@ const gameBoard = (() => {
         let winningCombinations = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]];
 
         const CheckEqualSymbol = (x, y, z) => {
-            return gameboardArray[x] == gameboardArray[y] && gameboardArray[y] == gameboardArray[z];
+            return gameboardArray[x] == gameboardArray[y] && gameboardArray[y] == gameboardArray[z] && gameboardArray[x] != '';
         }
         
         for(let i = 0; i < winningCombinations.length; i++) {
@@ -59,7 +59,7 @@ const gameFlow = (() => {
 
                 gameBoard.gameboardArray[playerChoice] = player.symbol;                                                                         
 
-                console.log(gameBoard.gameboardArray);
+                console.table(gameBoard.gameboardArray);
 
                 [gameOver, winnerSymbol] = gameBoard.checkWinCondition();
                 
@@ -71,11 +71,15 @@ const gameFlow = (() => {
         }
         if (winnerSymbol) {
             console.log(`${winnerSymbol} WINS!`);
-        } else {
-            console.log("It's a draw!");
         }
+        else {
+            if (gameBoard.gameboardArray.every(cell => cell !== '')) {
+                console.log("It's a draw!");
+            }
+        } 
     };
 
     return { playerList, startGameLoop };
 })();
 
+gameFlow.startGameLoop();
