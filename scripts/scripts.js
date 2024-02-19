@@ -6,18 +6,17 @@ const gameBoard = (() => {
         return gameboardArray[index] == '';
     }    
 
-
     const checkWinCondition = () => {
         let winningCombinations = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]];
 
         const CheckEqualSymbol = (x, y, z) => {
-            return gameBoard.gameboardArray[x] == gameBoard.gameboardArray[y] && gameBoard.gameboardArray[y] == gameBoard.gameboardArray[z];
+            return gameboardArray[x] == gameboardArray[y] && gameboardArray[y] == gameboardArray[z];
         }
         
         for(let i = 0; i < winningCombinations.length; i++) {
             let [x, y, z] = winningCombinations[i];
             if(CheckEqualSymbol(x, y, z)) {
-                return [true, gameBoard.gameboardArray[x]];
+                return [true, gameboardArray[x]];
             }
         }
         return [false, null];
@@ -29,7 +28,13 @@ const gameBoard = (() => {
 
 function createPlayer(symbol) {
     const getTurn = () => {
-        return Number(window.prompt("TICTACTOE INDEX: "));
+        let playerMove;
+        do {
+            playerMove = Number(window.prompt("TICTACTOE INDEX: ")); 
+        }
+        while(playerMove > gameBoard.gameboardArray.length || playerMove < 0);
+
+        return playerMove;
     }
     return { symbol, getTurn };
 }
@@ -43,8 +48,8 @@ const gameFlow = (() => {
     const startGameLoop = () => {
         let winnerSymbol;
         while (!gameOver) {
-            playerList.forEach(player => {
-
+            for (let i = 0; i < playerList.length; i++) {
+                let player = playerList[i];
                 // Check for valid move
                 let playerChoice;
                 do {
@@ -57,12 +62,20 @@ const gameFlow = (() => {
                 console.log(gameBoard.gameboardArray);
 
                 [gameOver, winnerSymbol] = gameBoard.checkWinCondition();
-            });
+                
+                // I forgot about the existence of the 'every' function
+                if (gameOver || gameBoard.gameboardArray.every(cell => cell !== '')) {
+                    break;
+                }
+            };
         }
-        return winnerSymbol;
+        if (winnerSymbol) {
+            console.log(`${winnerSymbol} WINS!`);
+        } else {
+            console.log("It's a draw!");
+        }
     };
 
     return { playerList, startGameLoop };
 })();
 
-console.log(`${gameFlow.startGameLoop()} WINS!`);
