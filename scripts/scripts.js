@@ -3,7 +3,8 @@
 // Remove old alert stuff
 
 const gameBoard = (() => {
-    const gameboardArray = ['','','','','','','','',''];
+    const gameboardArray = ['X','X','X','X','X','X','X','X','X'];
+    // const gameboardArray = ['','','','','','','','',''];
 
     const checkEmptySpace = (index) => {
         return gameboardArray[index] == '';
@@ -33,7 +34,7 @@ function createPlayer(symbol) {
     const getTurn = () => {
         let playerMove;
         do {
-            // playerMove = Number(window.prompt("TICTACTOE INDEX: ")); 
+            playerMove = Number(window.prompt("TICTACTOE INDEX: ")); 
         }
         while(playerMove > gameBoard.gameboardArray.length || playerMove < 0);
 
@@ -49,6 +50,7 @@ const gameFlow = (() => {
 
     const displayBoardArray = () => {
         let tictactoeGrid = document.querySelector('.tictactoe-container');
+        tictactoeGrid.innerHTML = '';
 
         gameBoard.gameboardArray.forEach(element => {
             let tictactoeSquare = document.createElement('div');
@@ -66,13 +68,15 @@ const gameFlow = (() => {
                 // Check for valid move
                 let playerChoice;
                 do {
-                    playerChoice = player.getTurn();
+                     // playerChoice = player.getTurn();
+                     break;
                 }
                 while (!gameBoard.checkEmptySpace(playerChoice));
 
                 gameBoard.gameboardArray[playerChoice] = player.symbol;                                                                         
 
                 console.table(gameBoard.gameboardArray);
+                displayBoardArray();
 
                 [gameOver, winnerSymbol] = gameBoard.checkWinCondition();
                 
