@@ -1,4 +1,7 @@
-// I need steve jobs on this code idk what im doing anymore 
+// Build the grid on screen
+// On click on a grid element, place it based on its index
+// Remove old alert stuff
+
 const gameBoard = (() => {
     const gameboardArray = ['','','','','','','','',''];
 
@@ -30,7 +33,7 @@ function createPlayer(symbol) {
     const getTurn = () => {
         let playerMove;
         do {
-            playerMove = Number(window.prompt("TICTACTOE INDEX: ")); 
+            // playerMove = Number(window.prompt("TICTACTOE INDEX: ")); 
         }
         while(playerMove > gameBoard.gameboardArray.length || playerMove < 0);
 
@@ -43,6 +46,16 @@ const gameFlow = (() => {
     const playerList = [createPlayer('X'), createPlayer('O')];
 
     let gameOver = false;
+
+    const displayBoardArray = () => {
+        let tictactoeGrid = document.querySelector('.tictactoe-container');
+
+        gameBoard.gameboardArray.forEach(element => {
+            let tictactoeSquare = document.createElement('div');
+            tictactoeSquare.textContent = element;
+            tictactoeGrid.appendChild(tictactoeSquare);
+        });
+    }
 
     // This is probably unoptimized
     const startGameLoop = () => {
@@ -79,7 +92,7 @@ const gameFlow = (() => {
         } 
     };
 
-    return { playerList, startGameLoop };
+    return { playerList, startGameLoop, displayBoardArray };
 })();
 
 gameFlow.startGameLoop();
