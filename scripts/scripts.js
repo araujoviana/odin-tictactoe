@@ -1,13 +1,13 @@
 // Build the grid on screen DONE
 // Clean up this mess
-// Change get turn for click instead of alert prompts
+// Change get turn for click instead of alert prompts - DONE
 // On click on a grid element, place it based on its index
 // Remove old alert stuff
 
 const gameBoard = (() => {
     // TEMPORARY
-    const gameboardArray = ['X','X','X','X','X','X','X','X','X'];
-    // const gameboardArray = ['','','','','','','','',''];
+    //const gameboardArray = ['X','X','X','X','X','X','X','X','X'];
+    const gameboardArray = ['','','','','','','','',''];
 
     const checkEmptySpace = (index) => {
         return gameboardArray[index] == '';
@@ -34,15 +34,15 @@ const gameBoard = (() => {
 })();
 
 function createPlayer(symbol) {
-    const getTurn = () => {
-        let playerMove;
-        do {
-            playerMove = Number(window.prompt("TICTACTOE INDEX: ")); 
-        }
-        while(playerMove > gameBoard.gameboardArray.length || playerMove < 0);
-
-        return playerMove;
-    }
+    const getTurn = (callback) => {
+        let clickableSquares = document.querySelectorAll(".tictactoe-square");
+    
+        clickableSquares.forEach((square, index) => {
+            square.addEventListener('click', () => {
+                callback(index);
+            });
+        });
+    }    
     return { symbol, getTurn };
 }
 
@@ -63,42 +63,36 @@ const gameFlow = (() => {
         });
     }
 
-    // This is probably unoptimized
+    // Changed to recursive using callback instead of whatever i was doing
     const startGameLoop = () => {
         let winnerSymbol;
-        while (!gameOver) {
-            for (let i = 0; i < playerList.length; i++) {
-                let player = playerList[i];
-                // Check for valid move
-                let playerChoice;
-                do {
-                    // temporary
-                     // playerChoice = player.getTurn();
-                     break;
+        let currentPlayerIndex = 0;
+    
+        const playTurn = () => {
+            let player = gameFlow.playerList[currentPlayerIndex];
+    
+            getTurn((index) => {
+                if (gameBoard.checkEmptySpace(index)) {
+                    gameBoard.gameboardArray[index] = player.symbol;
+                    displayBoardArray();
+    
+                    [gameOver, winnerSymbol] = gameBoard.checkWinCondition();
+    
+                    if (gameOver || gameBoard.gameboardArray.every(cell => cell !== '')) {
+                        if (winnerSymbol) {
+                            console.log(`${winnerSymbol} WINS!`);
+                        } else {
+                            console.log("It's a draw!");
+                        }
+                    } else {
+                        currentPlayerIndex = (currentPlayerIndex + 1) % gameFlow.playerList.length;
+                        playTurn(); // Recursive call for the next turn
+                    }
                 }
-                while (!gameBoard.checkEmptySpace(playerChoice));
-
-                gameBoard.gameboardArray[playerChoice] = player.symbol;                                                                         
-
-                console.table(gameBoard.gameboardArray);
-                displayBoardArray();
-
-                [gameOver, winnerSymbol] = gameBoard.checkWinCondition();
-                
-                // I forgot about the existence of the 'every' function
-                if (gameOver || gameBoard.gameboardArray.every(cell => cell !== '')) {
-                    break;
-                }
-            };
-        }
-        if (winnerSymbol) {
-            console.log(`${winnerSymbol} WINS!`);
-        }
-        else {
-            if (gameBoard.gameboardArray.every(cell => cell !== '')) {
-                console.log("It's a draw!");
-            }
-        } 
+            });
+        };
+    
+        playTurn(); // Start the first turn
     };
 
     return { playerList, startGameLoop, displayBoardArray };
