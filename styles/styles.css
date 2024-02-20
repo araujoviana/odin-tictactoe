@@ -1,15 +1,23 @@
-/* TODO: Style tictactoe grid */
-
 body {
     display: flex;
     justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .tictactoe-container {
     display: grid;
-    grid-template-columns: repeat(3,1rem);
-    grid-template-rows: repeat(3, 1rem);
-    border: solid;
+    grid-template-columns: repeat(3, 100px); 
+    grid-template-rows: repeat(3, 100px);
+    border: 1px solid #000; 
+}
+
+.tictactoe-square {
+    width: 100%; 
+    height: 100%; 
+    border: 1px solid #000; 
+    display: flex;
     align-items: center;
-    justify-items: center;
+    justify-content: center;
+    font-size: 600%; 
 }
