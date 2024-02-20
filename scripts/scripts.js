@@ -1,8 +1,11 @@
-// Build the grid on screen
+// Build the grid on screen DONE
+// Clean up this mess
+// Change get turn for click instead of alert prompts
 // On click on a grid element, place it based on its index
 // Remove old alert stuff
 
 const gameBoard = (() => {
+    // TEMPORARY
     const gameboardArray = ['X','X','X','X','X','X','X','X','X'];
     // const gameboardArray = ['','','','','','','','',''];
 
@@ -55,6 +58,7 @@ const gameFlow = (() => {
         gameBoard.gameboardArray.forEach(element => {
             let tictactoeSquare = document.createElement('div');
             tictactoeSquare.textContent = element;
+            tictactoeSquare.classList.add('tictactoe-square');
             tictactoeGrid.appendChild(tictactoeSquare);
         });
     }
@@ -68,6 +72,7 @@ const gameFlow = (() => {
                 // Check for valid move
                 let playerChoice;
                 do {
+                    // temporary
                      // playerChoice = player.getTurn();
                      break;
                 }
