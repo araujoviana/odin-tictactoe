@@ -61,6 +61,7 @@ const gameFlow = (() => {
     const startGameLoop = () => {
         let winnerSymbol;
         let currentPlayerIndex = 0;
+        const turn = document.querySelector(".turn");
         displayBoardArray();
 
         const playTurn = () => {
@@ -74,13 +75,19 @@ const gameFlow = (() => {
                     [gameOver, winnerSymbol] = gameBoard.checkWinCondition();
 
                     if (gameOver || gameBoard.gameboardArray.every(cell => cell !== '')) {
+                        // Game over message
+                        const message = document.querySelector(".message");
+                        message.style.display = "block";
+
                         if (winnerSymbol) {
-                            console.log(`${winnerSymbol} WINS!`);
+                            message.textContent = `${winnerSymbol} WINS!`;
                         } else {
-                            console.log("It's a draw!");
+                            message.textContent = "It's a draw!";
                         }
                     } else {
                         currentPlayerIndex = (currentPlayerIndex + 1) % gameFlow.playerList.length;
+                        turn.textContent = `${gameFlow.playerList[currentPlayerIndex].symbol}'s turn`; 
+                        displayBoardArray();
                         playTurn(); // Recursive call for the next turn
                     }
                 }
