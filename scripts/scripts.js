@@ -1,3 +1,13 @@
+// Disable (or hide) the tictactoe grid before the names are inserted
+// Get the name for each player 
+// Record that in their respective objects
+// hide the form after all the names are inserted
+// Enable (or show) the tictactoe grid again
+// Instead of saying X starts or X turn make it say their names
+// Make it say the winner's name when they win
+// IIRC thats it
+
+
 const gameBoard = (() => {
     const gameboardArray = ['', '', '', '', '', '', '', '', ''];
 
@@ -28,7 +38,7 @@ const gameBoard = (() => {
     return { gameboardArray, checkEmptySpace, checkWinCondition };
 })();
 
-function createPlayer(symbol) {
+function createPlayer(symbol, name) {
     const getTurn = (callback) => {
         let clickableSquares = document.querySelectorAll(".tictactoe-square");
 
@@ -39,7 +49,23 @@ function createPlayer(symbol) {
             });
         });
     }
-    return { symbol, getTurn };
+
+    const getName = (inputSymbol) => {
+        const nameInput = document.querySelector(".name-input");
+        const inputLegend = nameInput.querySelector("legend");
+        const inputButton = nameInput.querySelector("button");
+        const inputText = nameInput.querySelector("input");
+
+        inputLegend.textContent = inputSymbol;
+        inputButton.addEventListener("click", () => {
+            name = inputText.value;
+            console.log(name);
+            nameInput.style.display = 'none';
+        });
+
+        return name;
+    }
+    return { symbol, name , getTurn };
 }
 
 const gameFlow = (() => {

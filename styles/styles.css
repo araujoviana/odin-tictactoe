@@ -28,7 +28,18 @@ body {
 }
 
 .tictactoe-square:active {
-    background-color: #cccccc;
+    /* This is barely noticeable, but idk what color to use */
+    background-color: #fdfafadc;
+}
+
+.welcome,.name-input {
+    position: fixed;
+    top: 30px;
+    font-size: larger; 
+}
+
+.name-input {
+    top: 70px;
 }
 
 .message {
