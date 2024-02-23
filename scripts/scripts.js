@@ -1,12 +1,5 @@
-// Disable (or hide) the tictactoe grid before the names are inserted
-// Get the name for each player 
-// Record that in their respective objects
-// hide the form after all the names are inserted
-// Enable (or show) the tictactoe grid again
-// Instead of saying X starts or X turn make it say their names
-// Make it say the winner's name when they win
-// IIRC thats it
-
+// I will return to this code later when i figure out how deal with player's names via form :(
+// For now a alert is good enough i guess
 
 const gameBoard = (() => {
     const gameboardArray = ['', '', '', '', '', '', '', '', ''];
@@ -38,39 +31,47 @@ const gameBoard = (() => {
     return { gameboardArray, checkEmptySpace, checkWinCondition };
 })();
 
-function createPlayer(symbol, name) {
+function createPlayer(symbol) {
+    let name = '';
+  
     const getTurn = (callback) => {
         let clickableSquares = document.querySelectorAll(".tictactoe-square");
 
         clickableSquares.forEach((square, index) => {
             square.addEventListener('click', () => {
-                console.log("CLICKED");
                 callback(index);
             });
         });
     }
 
-    const getName = (inputSymbol) => {
+
+    // FIX THIS LATER
+    const setName = () => {
         const nameInput = document.querySelector(".name-input");
         const inputLegend = nameInput.querySelector("legend");
         const inputButton = nameInput.querySelector("button");
         const inputText = nameInput.querySelector("input");
 
-        inputLegend.textContent = inputSymbol;
+        inputLegend.textContent = symbol;
         inputButton.addEventListener("click", () => {
             name = inputText.value;
-            console.log(name);
+            console.log(`Got name for ${name} - ${symbol}`);
             nameInput.style.display = 'none';
         });
-
-        return name;
     }
-    return { symbol, name , getTurn };
+    // setName();
+    return { symbol, name, getTurn };
 }
 
 const gameFlow = (() => {
-    const playerList = [createPlayer('X'), createPlayer('O')];
-    let gameOver = false;
+    let playerList = [];
+
+    const createPlayers = () => {
+        playerList = [createPlayer('X'), createPlayer('O')];
+        playerList.forEach(player => {
+            player.name = window.prompt(`${player.symbol}'s name: `)
+        });
+    };
 
     const displayBoardArray = () => {
         let tictactoeGrid = document.querySelector('.tictactoe-container');
@@ -87,11 +88,12 @@ const gameFlow = (() => {
     const startGameLoop = () => {
         let winnerSymbol;
         let currentPlayerIndex = 0;
+        let gameOver = false;
         const turn = document.querySelector(".turn");
         displayBoardArray();
 
         const playTurn = () => {
-            let player = gameFlow.playerList[currentPlayerIndex];
+            let player = playerList[currentPlayerIndex];
 
             player.getTurn((index) => {
                 if (gameBoard.checkEmptySpace(index) && !gameOver) {
@@ -101,29 +103,46 @@ const gameFlow = (() => {
                     [gameOver, winnerSymbol] = gameBoard.checkWinCondition();
 
                     if (gameOver || gameBoard.gameboardArray.every(cell => cell !== '')) {
-                        // Game over message
                         const message = document.querySelector(".message");
                         message.style.display = "block";
 
                         if (winnerSymbol) {
-                            message.textContent = `${winnerSymbol} WINS!`;
+                            message.textContent = `${player.name} WINS!`;
+                            gameFlow.addResetButton();
+        
                         } else {
                             message.textContent = "It's a draw!";
+                            gameFlow.addResetButton();
                         }
                     } else {
-                        currentPlayerIndex = (currentPlayerIndex + 1) % gameFlow.playerList.length;
-                        turn.textContent = `${gameFlow.playerList[currentPlayerIndex].symbol}'s turn`; 
+                        currentPlayerIndex = (currentPlayerIndex + 1) % playerList.length;
+                        turn.textContent = `${playerList[currentPlayerIndex].name}'s turn`;
                         displayBoardArray();
-                        playTurn(); // Recursive call for the next turn
+                        playTurn();
                     }
                 }
             });
         };
 
+        createPlayers();
         playTurn();
     };
 
-    return { playerList, startGameLoop, displayBoardArray };
+    const addResetButton = () => {
+        const message = document.querySelector(".message");
+        const resetButton = document.createElement('button');
+        resetButton.textContent = "Reset";
+
+        resetButton.addEventListener('click', () => {
+            // It ain't much but its honest work
+            location.reload();
+        });
+        
+        message.appendChild(resetButton);
+    };
+
+
+    return { playerList, startGameLoop, displayBoardArray, addResetButton };
 })();
 
 gameFlow.startGameLoop();
